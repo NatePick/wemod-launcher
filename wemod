@@ -729,8 +729,13 @@ def run(skip_init: bool = False) -> str:
     norm_noexe_conf = no_exe_conf.lower() if no_exe_conf else None
 
     if (
-        norm_noexe_env == "true" or norm_noexe_conf == "true" or
-        (norm_noexe_env is None and norm_noexe_conf is None and contains_url_protocol(GAME_EXE))
+        norm_noexe_env == "true"
+        or norm_noexe_conf == "true"
+        or (
+            norm_noexe_env is None
+            and norm_noexe_conf is None
+            and contains_url_protocol(GAME_EXE)
+        )
     ):
         REL_EXE = GAME_EXE
         WIN_CMD = REL_EXE
