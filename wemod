@@ -629,6 +629,14 @@ def build_prefix(proton_dir: str) -> None:
             ask_for_log=True,
         )
 
+# Check if a string contains a url protocol
+def contains_url_protocol(s):
+    parts = s.split("://")
+    if len(parts) < 2:
+        return False
+
+    protocol = parts[0]
+    return protocol.isalnum() and len(protocol) > 1
 
 # Main run function
 def run(skip_init: bool = False) -> str:
@@ -712,7 +720,10 @@ def run(skip_init: bool = False) -> str:
     # Get working dir
     WORK_DIR = os.path.realpath(os.getcwd())
 
-    if os.getenv("NO_EXE") or load_conf_setting("NoEXE"):
+    if contains_url_protocol(GAME_EXE) or (
+        (os.getenv("NO_EXE") and os.getenv("NO_EXE").lower() == "true") or
+        (load_conf_setting("NoEXE") and load_conf_setting("NoEXE").lower() == "true")
+    ):
         REL_EXE = GAME_EXE
         WIN_CMD = REL_EXE
     else:
