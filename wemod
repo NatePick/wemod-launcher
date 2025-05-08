@@ -722,12 +722,15 @@ def run(skip_init: bool = False) -> str:
     # Get working dir
     WORK_DIR = os.path.realpath(os.getcwd())
 
-    if contains_url_protocol(GAME_EXE) or (
-        (os.getenv("NO_EXE") and os.getenv("NO_EXE").lower() == "true")
-        or (
-            load_conf_setting("NoEXE")
-            and load_conf_setting("NoEXE").lower() == "true"
-        )
+    no_exe_env = os.getenv("NO_EXE")
+    no_exe_conf = load_conf_setting("NoEXE")
+
+    norm_noexe_env = no_exe_env.lower() if no_exe_env else None
+    norm_noexe_conf = no_exe_conf.lower() if no_exe_conf else None
+
+    if (
+        norm_noexe_env == "true" or norm_noexe_conf == "true" or
+        (norm_noexe_env is None and norm_noexe_conf is None and contains_url_protocol(GAME_EXE))
     ):
         REL_EXE = GAME_EXE
         WIN_CMD = REL_EXE
